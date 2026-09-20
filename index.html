@@ -64,7 +64,7 @@ function memoryNext(){clearInterval(memoryTimer);memoryTimer=null;beginTimedGame
 function memoryBack(){clearInterval(memoryTimer);memoryTimer=null;stopRecognition();show('home')}
 function beginTimedGame(){scoreVal=0;$('score').textContent=0;$('who').textContent=players[pi].name;show('game');endAt=performance.now()+settings.duration*1000;clearInterval(timer);timer=setInterval(tick,100);nextBall()}
 function tick(){let left=Math.max(0,Math.ceil((endAt-performance.now())/1000));$('time').textContent=left;if(performance.now()>=endAt)finishPlayer()}
-function speed(){let w=Math.max(1,$('arena').clientWidth);let crossingTime=settings.difficulty==='easy'?6.4:settings.difficulty==='hard'?3.2:4.5;return (w+120)/crossingTime}
+function speed(){let w=Math.max(1,$('arena').clientWidth);let crossingTime=settings.difficulty==='easy'?7.0:settings.difficulty==='hard'?3.6:5.0;return (w+120)/crossingTime}
 function nextBall(){if(performance.now()>=endAt)return finishPlayer();stopRecognition();$('bigFeedback').textContent='';phase='flying';currentColor=mapping[sequence[seqIndex++%sequence.length]];let b=$('ball');b.style.background=currentColor.hex;b.style.display='block';ballX=-120;ballY=50;b.style.left=ballX+'px';b.style.top=ballY+'%';b.style.transform='translateY(-50%)';$('instruction').textContent='Say the color or tap the ball';let last=performance.now();cancelAnimationFrame(anim);function frame(now){if(phase!=='flying')return;ballX+=speed()*(now-last)/1000;last=now;b.style.left=ballX+'px';if(ballX>$('arena').clientWidth){phase='idle';nextBall();return}anim=requestAnimationFrame(frame)}anim=requestAnimationFrame(frame);startRecognition('color')}
 function stopBallByTap(){if(phase==='flying')stopForDirection()}
 const ballEl=$('ball');
